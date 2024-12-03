@@ -1,6 +1,6 @@
+import 'package:custom_state_management/custom_state_management.dart';
 import 'package:custom_state_management/src/state_manger.dart';
 import 'package:flutter/material.dart';
-import 'package:custom_state_management/custom_state_management.dart';
 
 void main() {
   // Initialize the state manager with an initial counter value
