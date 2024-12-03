@@ -1,101 +1,191 @@
-# Custom State Management for Flutter
+    <h1>flutter_state_manager</h1>
+    <p>
+        <strong>flutter_state_manager</strong> is a lightweight and efficient state management library for Flutter applications. It provides a simple and flexible API to manage state synchronously and asynchronously without relying on external dependencies.
+    </p>
 
-A lightweight and efficient state management solution for Flutter applications that provides simple state handling without external dependencies.
+    <hr>
 
-## Features
+    <h2>🌟 Features</h2>
+    <ul>
+        <li><strong>Easy Integration:</strong> Simplify state management with minimal changes to your app's structure.</li>
+        <li><strong>Lightweight and Scalable:</strong> Supports simple states (variables) and complex states (maps, lists, nested states).</li>
+        <li><strong>Synchronous and Asynchronous Updates:</strong> Handles both real-time updates and asynchronous data fetches.</li>
+        <li><strong>Optimized Performance:</strong> Only updates the UI components affected by state changes, reducing unnecessary re-renders.</li>
+        <li><strong>Memory Safe:</strong> Prevents memory leaks and ensures stable performance in long-running applications.</li>
+    </ul>
 
-- 🎯 **Simple API**: Manage application state with an intuitive and straightforward API.
-- ⚡ **Synchronous and Asynchronous Updates**: Update state both synchronously and asynchronously with ease.
-- 🔄 **Stream-based State Listening**: Listen to state changes using streams for reactive programming.
-- 🎨 **Widget Rebuilding Optimization**: Efficiently rebuild widgets only when necessary, improving performance.
-- 🛡️ **Memory Leak Prevention**: Automatically manage listeners to prevent memory leaks.
+    <hr>
 
-## Installation
+    <h2>🚀 Installation</h2>
+    <p>Add this package to your <code>pubspec.yaml</code> file:</p>
+    <pre><code>dependencies:
 
-Add the following to your `pubspec.yaml`:
+flutter_state_manager: ^1.0.0
+</code></pre>
 
-````
+    <p>Or run the command:</p>
+    <pre><code>flutter pub add flutter_state_manager</code></pre>
 
-### Explanation
+    <hr>
 
-- **Features**: Expanded to provide more context on each feature.
-- **Installation**: Added instructions for adding the package to a Flutter project.
-- **Usage**: Detailed examples for using `StateNotifier`, `StateListener`, and `StateManager`.
-- **Contributing and License**: Added sections for contributing and licensing information.
+    <h2>📖 Getting Started</h2>
 
-This detailed README should help users understand how to integrate and use your custom state management solution in their Flutter applications.
+    <h3>1. Register a State</h3>
+    <p>Initialize the <code>StateManager</code> and register a state with a default value:</p>
+    <pre><code>import 'package:flutter_state_manager/flutter_state_manager.dart';
 
-## Usage
+final stateManager = StateManager();
+stateManager.registerState<int>('counter', 0);
+</code></pre>
 
-### StateNotifier
+    <h3>2. Access and Update State</h3>
+    <p>Use <code>getState</code> to retrieve a state and <code>updateState</code> to update it:</p>
+    <pre><code>// Retrieve the current state
 
-The `StateNotifier` class is the core of this state management solution. It holds a piece of state and notifies listeners when the state changes.
+final counter = stateManager.getState<int>('counter');
 
-- **Creating a StateNotifier**:
-  ```dart
-  final counterNotifier = StateNotifier<int>(initialValue: 0);
-````
+// Update the state
+stateManager.updateState<int>('counter', counter + 1);
+</code></pre>
 
-- **Updating State**:
+    <h3>3. Listen to State Changes</h3>
+    <p>Use <code>watchState</code> to listen for state changes and update the UI dynamically:</p>
+    <pre><code>StreamBuilder<int>(
 
-  ```dart
-  counterNotifier.update((value) => value + 1);
-  ```
+stream: stateManager.watchState<int>('counter'),
+initialData: stateManager.getState<int>('counter'),
+builder: (context, snapshot) {
+final counter = snapshot.data ?? 0;
+return Text('Counter: $counter');
+},
+);
+</code></pre>
 
-- **Listening to State Changes**:
+    <h3>4. Reset or Remove State</h3>
+    <p>Reset a state to its default value or remove it completely:</p>
+    <pre><code>// Reset state
 
-  ```dart
-  counterNotifier.addListener((value) {
-    print('Counter updated: $value');
-  });
-  ```
+stateManager.resetState<int>('counter');
 
-- **Using Streams**:
-  ```dart
-  counterNotifier.stream.listen((value) {
-    print('Stream value: $value');
-  });
-  ```
+// Remove state
+stateManager.removeState('counter');
+</code></pre>
 
-### StateListener
+    <hr>
 
-The `StateListener` widget listens to a `StateNotifier` and rebuilds its child widget whenever the state changes.
+    <h2>📋 Example</h2>
+    <p>Here’s a simple counter app using <strong>flutter_state_manager</strong>:</p>
+    <pre><code>import 'package:flutter/material.dart';
 
-- **Using StateListener**:
-  ```dart
-  StateListener<int>(
-    notifier: counterNotifier,
-    builder: (context, value) {
-      return Text('Counter: $value');
-    },
-  );
-  ```
+import 'package:flutter_state_manager/flutter_state_manager.dart';
 
-### StateManager
+void main() {
+final stateManager = StateManager();
+stateManager.registerState<int>('counter', 0);
+runApp(MyApp(stateManager));
+}
 
-The `StateManager` class is a singleton that manages multiple `StateNotifier` instances, each identified by a unique key.
+class MyApp extends StatelessWidget {
+final StateManager stateManager;
 
-- **Registering a State**:
+MyApp(this.stateManager);
 
-  ```dart
-  StateManager<int>().registerState('counter', 0);
-  ```
+@override
+Widget build(BuildContext context) {
+return MaterialApp(
+home: Scaffold(
+appBar: AppBar(title: Text('State Manager Example')),
+body: CounterScreen(stateManager),
+),
+);
+}
+}
 
-- **Retrieving a StateNotifier**:
+class CounterScreen extends StatelessWidget {
+final StateManager stateManager;
 
-  ```dart
-  final counterNotifier = StateManager<int>().getStateNotifier('counter');
-  ```
+CounterScreen(this.stateManager);
 
-- **Resetting All States**:
-  ```dart
-  StateManager<int>().resetAllStates();
-  ```
+@override
+Widget build(BuildContext context) {
+return StreamBuilder<int>(
+stream: stateManager.watchState<int>('counter'),
+initialData: stateManager.getState<int>('counter'),
+builder: (context, snapshot) {
+final counter = snapshot.data ?? 0;
 
-## Contributing
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Counter: $counter'),
+              ElevatedButton(
+                onPressed: () {
+                  stateManager.updateState<int>('counter', counter + 1);
+                },
+                child: Text('Increment'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
 
-Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
+}
+}
+</code></pre>
 
-## License
+    <hr>
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+    <h2>🛠 API Reference</h2>
+    <p>The core class for managing states:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>registerState&lt;T&gt;()</code></td>
+                <td>Registers a state with a default value.</td>
+            </tr>
+            <tr>
+                <td><code>getState&lt;T&gt;()</code></td>
+                <td>Retrieves the current value of a state.</td>
+            </tr>
+            <tr>
+                <td><code>updateState&lt;T&gt;()</code></td>
+                <td>Updates the value of a state.</td>
+            </tr>
+            <tr>
+                <td><code>watchState&lt;T&gt;()</code></td>
+                <td>Returns a stream for listening to state changes.</td>
+            </tr>
+            <tr>
+                <td><code>resetState&lt;T&gt;()</code></td>
+                <td>Resets a state to its default value.</td>
+            </tr>
+            <tr>
+                <td><code>removeState()</code></td>
+                <td>Removes a state from the manager.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>📦 Performance Considerations</h2>
+    <ul>
+        <li><strong>Optimized Rendering:</strong> Only updates UI components affected by the state change.</li>
+        <li><strong>Scalability:</strong> Handles multiple state updates efficiently, even in large-scale applications.</li>
+        <li><strong>Memory Safety:</strong> Prevents memory leaks by cleaning up unused states.</li>
+    </ul>
+
+    <hr>
+
+    <h2>📬 Support</h2>
+    <p>If you encounter any issues or have feature requests, please open an issue on the <a href="https://github.com/your_username/flutter_state_manager/issues">GitHub Repository</a>.</p>
+
+    <p>Happy coding! 🎉</p>
