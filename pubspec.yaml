@@ -1,0 +1,25 @@
+name: flutter_state_manager
+description: A simple state management library for Flutter applications.
+version: 1.0.0
+homepage: https://github.com/baotran310702/Custom-State-Management
+repository: https://github.com/baotran310702/Custom-State-Management
+issue_tracker: https://github.com/baotran310702/Custom-State-Management/issues
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.flutter_state_manager
+      ios:
+        pluginClass: FlutterStateManagerPlugin
