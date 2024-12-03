@@ -3,7 +3,7 @@
 ### 1. Register a State
 Initialize the `StateManager` and register a state with a default value:
 
-import 'package:flutter_state_manager/flutter_state_manager.dart';
+`import 'package:flutter_state_manager/flutter_state_manager.dart';`
 
 final stateManager = StateManager();
 stateManager.registerState<int>('counter', 0);
