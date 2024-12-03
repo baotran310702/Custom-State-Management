@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>flutter_state_manager</title>
-</head>
-<body>
     <h1>flutter_state_manager</h1>
     <p>
         <strong>flutter_state_manager</strong> is a lightweight and efficient state management library for Flutter applications. It provides a simple and flexible API to manage state synchronously and asynchronously without relying on external dependencies.
@@ -197,6 +189,3 @@ final counter = snapshot.data ?? 0;
     <p>If you encounter any issues or have feature requests, please open an issue on the <a href="https://github.com/your_username/flutter_state_manager/issues">GitHub Repository</a>.</p>
 
     <p>Happy coding! 🎉</p>
-
-</body>
-</html>
