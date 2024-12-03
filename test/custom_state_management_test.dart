@@ -33,7 +33,7 @@ void main() {
       counterNotifier.addListener((value) => listenerValue = value);
 
       await counterNotifier.updateAsync((value) async {
-        await Future.delayed(Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 100));
         return value + 1;
       });
 
